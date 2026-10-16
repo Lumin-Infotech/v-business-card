@@ -47,10 +47,11 @@ Route::middleware(['auth', 'active.user'])->group(function () {
     });
 });
 
-// Public card routes - must be last to avoid catching admin routes
+// Auth and settings routes MUST come before the catch-all public card route
+require __DIR__.'/settings.php';
+require __DIR__.'/auth.php';
+
+// Public card routes - must be LAST to avoid catching other routes
 Route::get('/{slug}', [PublicCardController::class, 'show'])->where('slug', '[a-z0-9\-]+')->name('public.card');
 Route::get('/{slug}/qr', [PublicCardController::class, 'qr'])->where('slug', '[a-z0-9\-]+')->name('public.card.qr');
 Route::get('/{slug}/contact', [PublicCardController::class, 'downloadContact'])->where('slug', '[a-z0-9\-]+')->name('public.card.contact');
-
-require __DIR__.'/settings.php';
-require __DIR__.'/auth.php';

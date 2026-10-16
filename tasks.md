@@ -193,3 +193,39 @@
 
 **Last Updated**: 2026-10-16
 **Status**: ✅ PROJECT COMPLETE! All 78 tasks done. Ready for production.
+
+---
+
+## Bug Fix Log
+
+### Fixed: Login Route 404 Error
+- **Issue**: `/login` returning 404 because catch-all `/{slug}` route was matching it first
+- **Root Cause**: Route loading order - public card routes were defined before auth routes
+- **Solution**: Moved `require auth.php` and `require settings.php` BEFORE public card catch-all routes
+- **File**: `routes/web.php`
+- **Status**: ✅ Fixed - All 68 tests passing, login page loads successfully
+
+### Fixed: Missing 'register' Route Error in Login Component
+- **Issue**: JavaScript error "Ziggy error: route 'register' is not in the route list"
+- **Root Cause**: Login component referenced `route('register')` but registration is disabled
+- **Solution**: Removed sign-up link from login page, replaced with "Contact your administrator to create an account"
+- **File**: `resources/js/pages/auth/login.tsx`
+- **Status**: ✅ Fixed - Build successful, login page renders without errors
+
+### Fixed: React Element Type Error on Login Page
+- **Issue**: "React.createElement: type is invalid -- expected a string (for built-in components) or a class/function (for composite components) but got: object"
+- **Root Cause**: Checkbox component was not properly bound to form state
+- **Solution**: Added `checked` and `onCheckedChange` props to Checkbox component with proper state binding
+- **File**: `resources/js/pages/auth/login.tsx` (lines 82-91)
+- **Status**: ✅ Fixed - All 68 tests passing, login page renders cleanly
+
+### Fixed: Missing Navigation in Admin Dashboard
+- **Issue**: No navigation items visible in sidebar after login to dashboard
+- **Root Cause**: `mainNavItems` in `app-sidebar.tsx` only contained Dashboard entry
+- **Solution**: Added navigation items for Business Cards, Users, and Analytics modules
+- **File**: `resources/js/components/app-sidebar.tsx`
+- **Items Added**:
+  - Business Cards → `/admin/cards` (Wallet icon)
+  - Users → `/admin/users` (Users icon)
+  - Analytics → `/admin/analytics` (BarChart3 icon)
+- **Status**: ✅ Fixed - Sidebar now displays all admin module navigation, all 68 tests passing
