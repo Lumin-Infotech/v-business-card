@@ -16,8 +16,8 @@ interface User {
 interface Props {
     users: {
         data: User[];
-        links: any;
-        meta: any;
+        links: Array<{ url: string | null; label: string; active: boolean }>;
+        meta: { current_page: number; from: number; to: number; total: number; per_page: number };
     };
     filters: {
         search: string;

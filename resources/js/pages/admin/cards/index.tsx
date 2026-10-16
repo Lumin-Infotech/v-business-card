@@ -14,11 +14,25 @@ interface BusinessCard {
     created_at: string;
 }
 
+interface PaginationLink {
+    url: string | null;
+    label: string;
+    active: boolean;
+}
+
+interface PaginationMeta {
+    current_page: number;
+    from: number;
+    to: number;
+    total: number;
+    per_page: number;
+}
+
 interface Props {
     cards: {
         data: BusinessCard[];
-        links: any;
-        meta: any;
+        links: PaginationLink[];
+        meta: PaginationMeta;
     };
     filters: {
         search: string;
