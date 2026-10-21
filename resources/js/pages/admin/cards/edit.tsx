@@ -295,7 +295,10 @@ export default function EditCard({ card, breadcrumbs = [] }: EditCardProps) {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <Label>Profile Photo</Label>
-                                    <div className="mt-2 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6">
+                                    <div
+                                        className="mt-2 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 cursor-pointer hover:border-gray-400 dark:hover:border-gray-500 transition-colors"
+                                        onClick={() => profileInputRef.current?.click()}
+                                    >
                                         {profilePreview ? (
                                             <div className="relative inline-block">
                                                 <img
@@ -305,14 +308,17 @@ export default function EditCard({ card, breadcrumbs = [] }: EditCardProps) {
                                                 />
                                                 <button
                                                     type="button"
-                                                    onClick={() => removeImage('profile')}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        removeImage('profile');
+                                                    }}
                                                     className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
                                                 >
                                                     <X className="w-4 h-4" />
                                                 </button>
                                             </div>
                                         ) : (
-                                            <div className="text-center">
+                                            <div className="text-center pointer-events-none">
                                                 <Upload className="w-8 h-8 mx-auto text-gray-400 mb-2" />
                                                 <p className="text-sm text-gray-600 dark:text-gray-400">Click to upload or drag and drop</p>
                                                 <p className="text-xs text-gray-500 dark:text-gray-500">JPEG, PNG, WebP (Max 5MB)</p>
@@ -323,7 +329,7 @@ export default function EditCard({ card, breadcrumbs = [] }: EditCardProps) {
                                             type="file"
                                             accept="image/jpeg,image/png,image/webp"
                                             onChange={(e) => handleFileChange(e, 'profile')}
-                                            className="absolute inset-0 opacity-0 cursor-pointer"
+                                            className="hidden"
                                         />
                                     </div>
                                     <InputError message={errors.profile_photo} />
@@ -331,7 +337,10 @@ export default function EditCard({ card, breadcrumbs = [] }: EditCardProps) {
 
                                 <div>
                                     <Label>Cover Image</Label>
-                                    <div className="mt-2 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6">
+                                    <div
+                                        className="mt-2 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 cursor-pointer hover:border-gray-400 dark:hover:border-gray-500 transition-colors"
+                                        onClick={() => coverInputRef.current?.click()}
+                                    >
                                         {coverPreview ? (
                                             <div className="relative inline-block">
                                                 <img
@@ -341,14 +350,17 @@ export default function EditCard({ card, breadcrumbs = [] }: EditCardProps) {
                                                 />
                                                 <button
                                                     type="button"
-                                                    onClick={() => removeImage('cover')}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        removeImage('cover');
+                                                    }}
                                                     className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
                                                 >
                                                     <X className="w-4 h-4" />
                                                 </button>
                                             </div>
                                         ) : (
-                                            <div className="text-center">
+                                            <div className="text-center pointer-events-none">
                                                 <Upload className="w-8 h-8 mx-auto text-gray-400 mb-2" />
                                                 <p className="text-sm text-gray-600 dark:text-gray-400">Click to upload or drag and drop</p>
                                                 <p className="text-xs text-gray-500 dark:text-gray-500">JPEG, PNG, WebP (Max 5MB)</p>
@@ -359,7 +371,7 @@ export default function EditCard({ card, breadcrumbs = [] }: EditCardProps) {
                                             type="file"
                                             accept="image/jpeg,image/png,image/webp"
                                             onChange={(e) => handleFileChange(e, 'cover')}
-                                            className="absolute inset-0 opacity-0 cursor-pointer"
+                                            className="hidden"
                                         />
                                     </div>
                                     <InputError message={errors.cover_image} />
