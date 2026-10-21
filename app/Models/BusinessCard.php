@@ -43,12 +43,13 @@ class BusinessCard extends Model
         'x_url',
         'youtube_url',
         'github_url',
-        'theme',
-        'primary_color',
-        'secondary_color',
-        'accent_color',
-        'background_color',
-        'font_family',
+        // Design fields are NOT fillable - they are system-controlled
+        // 'theme',
+        // 'primary_color',
+        // 'secondary_color',
+        // 'accent_color',
+        // 'background_color',
+        // 'font_family',
         'custom_settings',
         'created_by',
         'updated_by',
@@ -120,5 +121,24 @@ class BusinessCard extends Model
         ];
 
         return in_array($slug, $reserved);
+    }
+
+    /**
+     * Get the theme configuration for this card.
+     * Returns the predefined theme settings from config.
+     */
+    public function getThemeConfig(): ?array
+    {
+        $themes = config('themes.themes');
+        return $themes[$this->theme] ?? null;
+    }
+
+    /**
+     * Get a specific theme property (e.g., 'primary_color', 'name').
+     */
+    public function getThemeProperty(string $property): mixed
+    {
+        $config = $this->getThemeConfig();
+        return $config[$property] ?? null;
     }
 }

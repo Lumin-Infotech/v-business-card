@@ -60,13 +60,14 @@ class StoreBusinessCardRequest extends FormRequest
             'youtube_url' => 'nullable|url|max:255',
             'github_url' => 'nullable|url|max:255',
 
-            // Design
-            'theme' => 'required|string|in:corporate,gradient,minimal,dark,bold',
-            'primary_color' => 'required|string|size:7',
-            'secondary_color' => 'required|string|size:7',
-            'accent_color' => 'required|string|size:7',
-            'background_color' => 'nullable|string|size:7',
-            'font_family' => 'required|string|in:sans,serif,mono',
+            // Design fields - these are system-controlled and not user-editable
+            // User-provided values are ignored by the controller
+            // 'theme' => 'required|string|in:corporate,gradient,minimal,dark,bold',
+            // 'primary_color' => 'required|string|size:7',
+            // 'secondary_color' => 'required|string|size:7',
+            // 'accent_color' => 'required|string|size:7',
+            // 'background_color' => 'nullable|string|size:7',
+            // 'font_family' => 'required|string|in:sans,serif,mono',
 
             // Publishing
             'status' => 'required|in:draft,published',

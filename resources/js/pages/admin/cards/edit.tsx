@@ -647,131 +647,70 @@ export default function EditCard({ card, breadcrumbs = [] }: EditCardProps) {
                             </div>
                         </div>
 
-                        {/* Design & Theme Section */}
+                        {/* Design & Theme Section - System Controlled */}
                         <div className="space-y-6">
                             <div className="pb-4 border-b border-gray-200 dark:border-gray-700">
                                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Design & Theme</h2>
+                                <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                                    Design settings are locked and cannot be changed. Theme was assigned when this card was created.
+                                </p>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <Label htmlFor="theme">Theme *</Label>
-                                    <Select value={data.theme} onValueChange={(value) => setData('theme', value)}>
-                                        <SelectTrigger className="mt-2">
-                                            <SelectValue placeholder="Select a theme" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {themes.map((theme) => (
-                                                <SelectItem key={theme} value={theme}>
-                                                    {theme.charAt(0).toUpperCase() + theme.slice(1)}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <InputError message={errors.theme} />
-                                </div>
-
-                                <div>
-                                    <Label htmlFor="font_family">Font Family *</Label>
-                                    <Select value={data.font_family} onValueChange={(value) => setData('font_family', value)}>
-                                        <SelectTrigger className="mt-2">
-                                            <SelectValue placeholder="Select a font" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {fontFamilies.map((font) => (
-                                                <SelectItem key={font} value={font}>
-                                                    {font.charAt(0).toUpperCase() + font.slice(1)}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <InputError message={errors.font_family} />
-                                </div>
-
-                                <div>
-                                    <Label htmlFor="primary_color">Primary Color *</Label>
-                                    <div className="mt-2 flex items-center gap-2">
-                                        <Input
-                                            id="primary_color"
-                                            type="color"
-                                            value={data.primary_color}
-                                            onChange={(e) => setData('primary_color', e.target.value)}
-                                            className="h-10 w-20 p-1 cursor-pointer"
-                                        />
-                                        <Input
-                                            type="text"
-                                            value={data.primary_color}
-                                            onChange={(e) => setData('primary_color', e.target.value)}
-                                            placeholder="#4F46E5"
-                                            className="flex-1"
-                                        />
+                            {/* Read-only Theme Summary */}
+                            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-6">
+                                <div className="flex items-start justify-between">
+                                    <div>
+                                        <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                                            {card.theme.charAt(0).toUpperCase() + card.theme.slice(1)} Theme
+                                        </h3>
+                                        <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                                            This card's appearance is controlled by the system theme assigned at creation.
+                                        </p>
+                                        <div className="space-y-2 text-sm">
+                                            <div className="flex items-center gap-3">
+                                                <span className="text-gray-600 dark:text-gray-400">Primary:</span>
+                                                <div
+                                                    className="w-6 h-6 rounded border border-gray-300"
+                                                    style={{ backgroundColor: card.primary_color }}
+                                                    title={card.primary_color}
+                                                />
+                                                <span className="font-mono text-gray-700 dark:text-gray-300">{card.primary_color}</span>
+                                            </div>
+                                            <div className="flex items-center gap-3">
+                                                <span className="text-gray-600 dark:text-gray-400">Secondary:</span>
+                                                <div
+                                                    className="w-6 h-6 rounded border border-gray-300"
+                                                    style={{ backgroundColor: card.secondary_color }}
+                                                    title={card.secondary_color}
+                                                />
+                                                <span className="font-mono text-gray-700 dark:text-gray-300">{card.secondary_color}</span>
+                                            </div>
+                                            <div className="flex items-center gap-3">
+                                                <span className="text-gray-600 dark:text-gray-400">Accent:</span>
+                                                <div
+                                                    className="w-6 h-6 rounded border border-gray-300"
+                                                    style={{ backgroundColor: card.accent_color }}
+                                                    title={card.accent_color}
+                                                />
+                                                <span className="font-mono text-gray-700 dark:text-gray-300">{card.accent_color}</span>
+                                            </div>
+                                            <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400 mt-2">
+                                                <span>Font Family:</span>
+                                                <span className="font-semibold">{card.font_family === 'sans' ? 'Sans Serif' : card.font_family.charAt(0).toUpperCase() + card.font_family.slice(1)}</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <InputError message={errors.primary_color} />
-                                </div>
-
-                                <div>
-                                    <Label htmlFor="secondary_color">Secondary Color *</Label>
-                                    <div className="mt-2 flex items-center gap-2">
-                                        <Input
-                                            id="secondary_color"
-                                            type="color"
-                                            value={data.secondary_color}
-                                            onChange={(e) => setData('secondary_color', e.target.value)}
-                                            className="h-10 w-20 p-1 cursor-pointer"
-                                        />
-                                        <Input
-                                            type="text"
-                                            value={data.secondary_color}
-                                            onChange={(e) => setData('secondary_color', e.target.value)}
-                                            placeholder="#7C3AED"
-                                            className="flex-1"
-                                        />
+                                    <div className="text-right">
+                                        <span className="inline-block px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 rounded text-xs font-semibold">
+                                            Locked
+                                        </span>
                                     </div>
-                                    <InputError message={errors.secondary_color} />
-                                </div>
-
-                                <div>
-                                    <Label htmlFor="accent_color">Accent Color *</Label>
-                                    <div className="mt-2 flex items-center gap-2">
-                                        <Input
-                                            id="accent_color"
-                                            type="color"
-                                            value={data.accent_color}
-                                            onChange={(e) => setData('accent_color', e.target.value)}
-                                            className="h-10 w-20 p-1 cursor-pointer"
-                                        />
-                                        <Input
-                                            type="text"
-                                            value={data.accent_color}
-                                            onChange={(e) => setData('accent_color', e.target.value)}
-                                            placeholder="#06B6D4"
-                                            className="flex-1"
-                                        />
-                                    </div>
-                                    <InputError message={errors.accent_color} />
-                                </div>
-
-                                <div>
-                                    <Label htmlFor="background_color">Background Color</Label>
-                                    <div className="mt-2 flex items-center gap-2">
-                                        <Input
-                                            id="background_color"
-                                            type="color"
-                                            value={data.background_color}
-                                            onChange={(e) => setData('background_color', e.target.value)}
-                                            className="h-10 w-20 p-1 cursor-pointer"
-                                        />
-                                        <Input
-                                            type="text"
-                                            value={data.background_color}
-                                            onChange={(e) => setData('background_color', e.target.value)}
-                                            placeholder="#FFFFFF (optional)"
-                                            className="flex-1"
-                                        />
-                                    </div>
-                                    <InputError message={errors.background_color} />
                                 </div>
                             </div>
+
+                            <p className="text-xs text-gray-500 dark:text-gray-400 italic">
+                                Theme and design settings cannot be changed after card creation. Contact your administrator if you need a different theme.
+                            </p>
                         </div>
 
                         {/* Publishing Section */}

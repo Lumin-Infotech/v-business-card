@@ -185,30 +185,30 @@ test('can update card without changing any fields', function () {
     $this->assertEquals('Original Name', $card->name);
 });
 
-test('can update only card name and preserve other values', function () {
+test('can update only card name and design fields remain locked', function () {
     $card = BusinessCard::create([
         'name' => 'Original Name',
         'full_name' => 'John Doe',
         'slug' => 'john-doe',
         'job_title' => 'Engineer',
         'company_name' => 'Tech Corp',
-        'theme' => 'gradient',
-        'primary_color' => '#FF5733',
-        'secondary_color' => '#33FF57',
-        'accent_color' => '#3357FF',
-        'font_family' => 'serif',
+        // Note: theme and color fields are not fillable, so they use database defaults
         'status' => 'published',
         'is_active' => true,
         'created_by' => $this->admin->id,
     ]);
 
+    // Store original design values before update
+    $slugForUpdate = $card->slug;
+
     $response = $this->actingAs($this->admin)
-        ->put("/admin/cards/{$card->slug}", [
+        ->put("/admin/cards/{$slugForUpdate}", [
             'name' => 'Updated Name',
             'full_name' => 'John Doe',
-            'slug' => 'john-doe',
+            'slug' => $slugForUpdate,
             'job_title' => 'Engineer',
             'company_name' => 'Tech Corp',
+            // Attempt to change design (ignored - design fields are not fillable)
             'theme' => 'gradient',
             'primary_color' => '#FF5733',
             'secondary_color' => '#33FF57',
@@ -220,14 +220,21 @@ test('can update only card name and preserve other values', function () {
 
     $response->assertRedirect();
     $response->assertSessionHasNoErrors();
-    $card->refresh();
-    $this->assertEquals('Updated Name', $card->name);
-    $this->assertEquals('gradient', $card->theme);
-    $this->assertEquals('serif', $card->font_family);
-    $this->assertEquals('published', $card->status);
+
+    // Verify in database that design fields were NOT updated
+    $this->assertDatabaseHas('business_cards', [
+        'slug' => $slugForUpdate,
+        'name' => 'Updated Name', // Name was updated
+        'theme' => 'corporate', // Theme stayed as default (not changed)
+        'primary_color' => '#4F46E5', // Primary color stayed as default (not changed)
+        'secondary_color' => '#7C3AED', // Secondary color stayed as default (not changed)
+        'accent_color' => '#06B6D4', // Accent color stayed as default (not changed)
+        'font_family' => 'sans', // Font family stayed as default (not changed)
+        'status' => 'published', // Status WAS updated
+    ]);
 });
 
-test('can update theme, font family and colors', function () {
+test('design theme colors and fonts cannot be updated', function () {
     $card = BusinessCard::create([
         'name' => 'Test Card',
         'full_name' => 'John Doe',
@@ -247,6 +254,7 @@ test('can update theme, font family and colors', function () {
             'name' => 'Test Card',
             'full_name' => 'John Doe',
             'slug' => 'test-card',
+            // Attempt to change design (will be ignored)
             'theme' => 'bold',
             'primary_color' => '#FF1493',
             'secondary_color' => '#00CED1',
@@ -259,14 +267,15 @@ test('can update theme, font family and colors', function () {
     $response->assertRedirect();
     $response->assertSessionHasNoErrors();
     $card->refresh();
-    $this->assertEquals('bold', $card->theme);
-    $this->assertEquals('#FF1493', $card->primary_color);
-    $this->assertEquals('#00CED1', $card->secondary_color);
-    $this->assertEquals('#FFD700', $card->accent_color);
-    $this->assertEquals('mono', $card->font_family);
+    // VERIFY: Design fields remain locked to original values
+    $this->assertEquals('corporate', $card->theme);
+    $this->assertEquals('#4F46E5', $card->primary_color);
+    $this->assertEquals('#7C3AED', $card->secondary_color);
+    $this->assertEquals('#06B6D4', $card->accent_color);
+    $this->assertEquals('sans', $card->font_family);
 });
 
-test('can update slug and status', function () {
+test('slug cannot be changed and status can be updated', function () {
     $card = BusinessCard::create([
         'name' => 'Test Card',
         'full_name' => 'John Doe',
@@ -285,7 +294,7 @@ test('can update slug and status', function () {
         ->put("/admin/cards/{$card->slug}", [
             'name' => 'Test Card',
             'full_name' => 'John Doe',
-            'slug' => 'john-doe-updated',
+            'slug' => 'john-doe-updated', // Attempt to change (will be ignored)
             'theme' => 'corporate',
             'primary_color' => '#4F46E5',
             'secondary_color' => '#7C3AED',
@@ -297,9 +306,10 @@ test('can update slug and status', function () {
 
     $response->assertRedirect();
     $response->assertSessionHasNoErrors();
+    // VERIFY: Slug remains unchanged but status was updated
     $this->assertDatabaseHas('business_cards', [
-        'slug' => 'john-doe-updated',
-        'status' => 'published',
+        'slug' => 'john-doe', // Original slug unchanged
+        'status' => 'published', // Status updated
     ]);
 });
 

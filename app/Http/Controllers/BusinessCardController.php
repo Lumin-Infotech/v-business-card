@@ -77,6 +77,20 @@ class BusinessCardController extends Controller
             return back()->withInput()->withErrors(['slug' => 'This slug is reserved for system use.']);
         }
 
+        // AUTO-ASSIGN DEFAULT THEME (system-controlled)
+        // All design settings come from the centralized theme config
+        $defaultTheme = config('themes.default');
+        $themeConfig = config('themes.themes.' . $defaultTheme);
+
+        if ($themeConfig) {
+            $data['theme'] = $defaultTheme;
+            $data['primary_color'] = $themeConfig['primary_color'];
+            $data['secondary_color'] = $themeConfig['secondary_color'];
+            $data['accent_color'] = $themeConfig['accent_color'];
+            $data['background_color'] = $themeConfig['background_color'];
+            $data['font_family'] = $themeConfig['font_family'];
+        }
+
         // Handle image uploads
         if ($request->hasFile('profile_photo')) {
             $data['profile_photo'] = ImageUploadService::uploadProfilePhoto(
@@ -126,10 +140,13 @@ class BusinessCardController extends Controller
         $data = $request->validated();
         $data['updated_by'] = auth()->id();
 
-        // Check for reserved slugs (if slug changed)
-        if ($data['slug'] !== $card->slug && BusinessCard::isSlugReserved($data['slug'])) {
-            return back()->withInput()->withErrors(['slug' => 'This slug is reserved for system use.']);
-        }
+        // SECURITY: Design fields (theme, colors, font) are intentionally NOT updated
+        // They are system-controlled and immutable after creation
+        // The model's $fillable array excludes these fields
+
+        // Prevent slug changes (immutable after creation)
+        unset($data['slug']);
+        $card->slug = $card->slug; // Ensure slug is never updated
 
         // Handle profile photo upload
         if ($request->hasFile('profile_photo')) {
