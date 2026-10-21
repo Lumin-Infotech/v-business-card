@@ -1,1 +1,148 @@
-# Virtual Business Card Management System\n\n**A modern, production-ready SaaS application for creating, managing, and sharing professional virtual business cards.**\n\n[![Tests](https://img.shields.io/badge/tests-43%2F43-brightgreen)]()\n[![Build](https://img.shields.io/badge/build-passing-brightgreen)]()\n[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)\n\n## Features\n\n✨ **Core Functionality**\n- Create and manage unlimited virtual business cards\n- 5 professional themes with custom color picker\n- Responsive design for all devices\n- Slug-based public URLs (e.g., yoursite.com/john-doe)\n- Draft and published status control\n\n🔐 **Security & Administration**\n- Role-based access control (Admin/Editor)\n- User management with strong password requirements\n- Admin safeguards (prevent accidental deletion)\n- Active/inactive user status\n- Email verification support\n\n📊 **Analytics & Tracking**\n- Track page views, QR scans, vCard downloads\n- IP masking for privacy compliance\n- Event-based analytics dashboard\n- Daily statistics (last 30 days)\n- Recent activity log\n\n🔗 **Export & Sharing**\n- QR code generation (easy sharing)\n- vCard (.vcf) export (standard format)\n- Social media integration ready\n- Contact action links (email, phone, location)\n\n🎨 **Design System**\n- Tailwind CSS v4 with CSS variables\n- Dark mode support\n- Responsive component library\n- Radix UI integration\n- Modern SaaS aesthetic\n\n## Quick Start\n\n### Prerequisites\n- PHP 8.2+\n- Node.js 18+\n- Composer\n- MySQL 8.0+ (or SQLite for development)\n\n### Installation\n\n```bash\n# Clone repository\ngit clone <repo-url>\ncd business-card-manager\n\n# Install dependencies\ncomposer install\nnpm install\n\n# Setup environment\ncp .env.example .env\nphp artisan key:generate\n\n# Database setup\nphp artisan migrate\nphp artisan db:seed --class=AdminUserSeeder\n\n# Build frontend\nnpm run build\n\n# Start development\nphp artisan serve\n```\n\nAccess at: http://localhost:8000\n\n**Default Credentials**:\n- Email: `admin@example.com`\n- Password: `password`\n\n## Technology Stack\n\n| Layer | Technology |\n|-------|------------|\n| Backend | Laravel 12 + PHP 8.2+ |\n| Frontend | React 19 + Inertia.js |\n| Styling | Tailwind CSS v4 |\n| Components | Radix UI |\n| Database | MySQL + Eloquent ORM |\n| Build | Vite |\n| Testing | Pest/PHPUnit |\n\n## Project Structure\n\n```\napp/\n├── Http/Controllers/      # Business logic\n├── Models/                # Eloquent models\n├── Services/              # Reusable services\n├── Requests/              # Form validation\n└── Middleware/            # Authentication\n\nresources/\n├── js/pages/              # React pages\n├── js/components/         # Reusable components\n├── css/                   # Design tokens\n└── views/                 # Blade templates\n\ndatabase/\n├── migrations/            # Schema changes\n├── seeders/               # Data seeding\n└── factories/             # Test data\n\ntests/\n└── Feature/               # Integration tests\n```\n\n## Key Files\n\n- **DEPLOYMENT_GUIDE.md** - Complete deployment instructions\n- **API_DOCUMENTATION.md** - REST API reference\n- **IMPLEMENTATION_SUMMARY.md** - Development summary\n- **tasks.md** - Progress tracking\n- **ProjectPlan.md** - Original requirements\n\n## Testing\n\n```bash\n# Run all tests\nphp artisan test\n\n# Run specific test file\nphp artisan test tests/Feature/AdminAuthTest.php\n\n# With coverage\nphp artisan test --coverage\n```\n\n**Test Results**: 43/43 passing (100%)\n\n## Development\n\n```bash\n# Development server with hot reload\nnpm run dev\n\n# Production build\nnpm run build\n\n# Lint & format\nnpm run lint\nnpm run format\n```\n\n## Admin Dashboard\n\n- **Users** - `/admin/users` - Manage system users\n- **Cards** - `/admin/cards` - Create/edit business cards\n- **Analytics** - `/admin/analytics` - View engagement metrics\n\n## Public Pages\n\n- **Card Display** - `/{slug}` - Publicly shared business card\n- **QR Code** - `/{slug}/qr` - Downloadable QR code\n- **vCard Export** - `/{slug}/contact` - Download contact\n\n## Configuration\n\nUpdate `.env` for:\n- Database credentials\n- Mail settings\n- App URL and name\n- Debug mode (disable in production)\n\n## Security\n\n- CSRF protection on all forms\n- SQL injection prevention (Eloquent ORM)\n- XSS protection (React escaping)\n- Password hashing with bcrypt\n- Email verification support\n- IP masking in analytics\n\n## Performance\n\n- Frontend assets optimized (gzipped)\n- Database query optimization\n- Caching ready (config/view)\n- Asset bundling with Vite\n- Code splitting by page\n\n## Contributing\n\n1. Create feature branch: `git checkout -b feature/name`\n2. Make changes and test: `php artisan test`\n3. Commit: `git commit -am 'Add feature'`\n4. Push: `git push origin feature/name`\n5. Create Pull Request\n\n## License\n\nMIT License - see LICENSE file for details\n\n## Support\n\nFor issues and questions:\n- Check documentation files\n- Review test files for usage examples\n- Check error logs: `storage/logs/laravel.log`\n\n## Roadmap\n\n- [ ] Team/organization support\n- [ ] Custom domain support\n- [ ] API key authentication\n- [ ] Webhook integrations\n- [ ] Advanced analytics\n- [ ] White-label options\n\n## Status\n\n✅ **Production Ready** - Phases 1-8 complete, Phase 9 in progress\n\nFor detailed progress, see `tasks.md` and `IMPLEMENTATION_SUMMARY.md`.\n"
+# Virtual Business Card Management System
+
+**A modern, production-ready SaaS application for creating, managing, and sharing professional virtual business cards.**
+
+[![Tests](https://img.shields.io/badge/tests-74%2F74-brightgreen)](./tests)
+[![Build](https://img.shields.io/badge/build-passing-brightgreen)]()
+[![Laravel](https://img.shields.io/badge/laravel-12-red)]()
+[![React](https://img.shields.io/badge/react-19-blue)]()
+
+## Features
+
+✨ **Core Functionality**
+- Create and manage unlimited virtual business cards
+- 5 professional predefined themes with locked design settings
+- Responsive design for all devices
+- Slug-based public URLs (e.g., yoursite.com/john-doe)
+- Draft and published status control
+- Auto-generated slugs from card names
+
+🎨 **Theme System**
+- Visual card-based theme selection
+- 5 professionally designed themes
+- Locked design colors and fonts (no customization)
+- Editable theme selection on create and edit
+- Live preview of selected theme
+
+🔐 **Security & Administration**
+- Role-based access control (Admin/Editor)
+- User management with strong password requirements
+- Active/inactive user status
+- Email verification support
+- Secure design enforcement (5-layer protection)
+
+📊 **Analytics & Tracking**
+- Track page views and QR scans
+- IP masking for privacy compliance
+- Event-based analytics dashboard
+- Daily statistics
+
+🔗 **Export & Sharing**
+- QR code generation
+- vCard (.vcf) export
+- Social media integration ready
+
+## Quick Start
+
+### Prerequisites
+- PHP 8.2+
+- Node.js 18+
+- Composer
+- MySQL 8.0+ or SQLite
+
+### Installation
+
+```bash
+# Install dependencies
+composer install
+npm install
+
+# Setup environment
+cp .env.example .env
+php artisan key:generate
+
+# Database
+php artisan migrate
+php artisan db:seed
+
+# Build
+npm run build
+
+# Start
+php artisan serve
+```
+
+Access: http://localhost:8000
+Default: admin@example.com / password
+
+## Technology Stack
+
+- Backend: Laravel 12 + PHP 8.2
+- Frontend: React 19 + Inertia.js
+- Styling: Tailwind CSS v4
+- Components: Radix UI
+- Database: MySQL + Eloquent ORM
+- Testing: Pest (74 tests)
+
+## Project Structure
+
+```
+app/ - Controllers, Models, Services
+resources/ - React pages and components
+database/ - Migrations, Seeds, Factories
+tests/ - Feature tests (74 tests passing)
+```
+
+## Testing
+
+```bash
+php artisan test --compact
+# Result: 74/74 PASS ✅
+```
+
+## Development
+
+```bash
+npm run dev      # Hot reload
+npm run build    # Production build
+```
+
+## Admin Dashboard
+
+- **/admin/users** - Manage system users
+- **/admin/cards** - Create/edit business cards
+- **/admin/analytics** - View engagement metrics
+
+## Configuration
+
+Edit `.env` for database, app URL, and mail settings.
+
+## Security
+
+✅ CSRF protection
+✅ SQL injection prevention (Eloquent ORM)
+✅ XSS protection (React escaping)
+✅ Password hashing with bcrypt
+✅ Design field protection (5-layer security)
+
+## Status
+
+✅ **Production Ready**
+
+All features implemented and tested:
+- User management ✅
+- Business card CRUD ✅
+- Theme system with visual selection ✅
+- Analytics tracking ✅
+- Public card display ✅
+- Admin dashboard ✅
+
+## Documentation
+
+- **DEPLOYMENT_GUIDE.md** - Production deployment
+- **API_DOCUMENTATION.md** - REST API reference
+- **ProjectPlan.md** - Original requirements
+
+## License
+
+MIT License - see LICENSE file
