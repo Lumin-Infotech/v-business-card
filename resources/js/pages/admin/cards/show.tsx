@@ -15,6 +15,10 @@ interface BusinessCard {
     is_active: boolean;
     created_at: string;
     updated_at?: string;
+    profile_photo: string | null;
+    profile_photo_url: string | null;
+    cover_image: string | null;
+    cover_image_url: string | null;
 }
 
 interface ShowCardProps {
@@ -25,7 +29,7 @@ interface ShowCardProps {
 export default function ShowCard({ card, breadcrumbs = [] }: ShowCardProps) {
     const handleDelete = () => {
         if (confirm('Are you sure you want to delete this card? This action cannot be undone.')) {
-            router.delete(`/admin/cards/${card.id}`);
+            router.delete(`/admin/cards/${card.slug}`);
         }
     };
 

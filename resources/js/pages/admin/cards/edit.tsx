@@ -22,7 +22,9 @@ interface BusinessCard {
     short_bio: string | null;
     description: string | null;
     profile_photo: string | null;
+    profile_photo_url: string | null;
     cover_image: string | null;
+    cover_image_url: string | null;
     company_name: string | null;
     website: string | null;
     email: string | null;
@@ -131,8 +133,8 @@ export default function EditCard({ card, breadcrumbs = [] }: EditCardProps) {
         is_active: card.is_active,
     });
 
-    const [profilePreview, setProfilePreview] = useState<string | null>(card.profile_photo || null);
-    const [coverPreview, setCoverPreview] = useState<string | null>(card.cover_image || null);
+    const [profilePreview, setProfilePreview] = useState<string | null>(card.profile_photo_url || null);
+    const [coverPreview, setCoverPreview] = useState<string | null>(card.cover_image_url || null);
     const profileInputRef = useRef<HTMLInputElement>(null);
     const coverInputRef = useRef<HTMLInputElement>(null);
 
@@ -160,11 +162,15 @@ export default function EditCard({ card, breadcrumbs = [] }: EditCardProps) {
         if (type === 'profile') {
             setData('profile_photo', null);
             setProfilePreview(null);
-            if (profileInputRef.current) profileInputRef.current.value = '';
+            if (profileInputRef.current) {
+                profileInputRef.current.value = '';
+            }
         } else {
             setData('cover_image', null);
             setCoverPreview(null);
-            if (coverInputRef.current) coverInputRef.current.value = '';
+            if (coverInputRef.current) {
+                coverInputRef.current.value = '';
+            }
         }
     };
 
