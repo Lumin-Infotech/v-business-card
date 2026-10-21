@@ -142,9 +142,21 @@ class BusinessCardController extends Controller
         $data = $request->validated();
         $data['updated_by'] = auth()->id();
 
-        // SECURITY: Design fields (theme, colors, font) are intentionally NOT updated
-        // They are system-controlled and immutable after creation
-        // The model's $fillable array excludes these fields
+        // THEME SELECTION - User can change theme on edit
+        // Colors and fonts are always locked to the selected theme's configuration
+        $selectedTheme = $data['theme'] ?? $card->theme;
+        $themeConfig = config('themes.themes.' . $selectedTheme);
+
+        if ($themeConfig) {
+            // Allow theme selection to change
+            $data['theme'] = $selectedTheme;
+            // Lock colors and fonts to the selected theme's configuration
+            $data['primary_color'] = $themeConfig['primary_color'];
+            $data['secondary_color'] = $themeConfig['secondary_color'];
+            $data['accent_color'] = $themeConfig['accent_color'];
+            $data['background_color'] = $themeConfig['background_color'];
+            $data['font_family'] = $themeConfig['font_family'];
+        }
 
         // Prevent slug changes (immutable after creation)
         unset($data['slug']);

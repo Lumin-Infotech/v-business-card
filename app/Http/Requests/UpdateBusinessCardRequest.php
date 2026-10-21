@@ -61,9 +61,9 @@ class UpdateBusinessCardRequest extends FormRequest
             'youtube_url' => 'nullable|url|max:255',
             'github_url' => 'nullable|url|max:255',
 
-            // Design - Theme CANNOT be changed after creation (immutable)
-            // Colors and fonts are locked to each theme and cannot be customized
-            // 'theme' => removed - theme is immutable after creation
+            // Design - Theme CAN be changed, but colors/fonts are locked to the selected theme
+            'theme' => 'required|string|in:corporate,gradient,minimal,dark,bold',
+            // Color and font fields are NOT validated - they come from theme config
             // 'primary_color' => removed - locked to theme
             // 'secondary_color' => removed - locked to theme
             // 'accent_color' => removed - locked to theme
