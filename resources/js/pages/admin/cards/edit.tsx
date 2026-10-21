@@ -96,9 +96,9 @@ interface EditCardProps {
 }
 
 export default function EditCard({ card, breadcrumbs = [] }: EditCardProps) {
-    const { data, setData, put, processing, errors } = useForm<EditCardForm>({
-        name: card.name,
-        full_name: card.full_name,
+    const { data, setData, put, processing, errors, clearErrors } = useForm<EditCardForm>({
+        name: card.name || '',
+        full_name: card.full_name || '',
         job_title: card.job_title || '',
         department: card.department || '',
         short_bio: card.short_bio || '',
@@ -122,15 +122,15 @@ export default function EditCard({ card, breadcrumbs = [] }: EditCardProps) {
         x_url: card.x_url || '',
         youtube_url: card.youtube_url || '',
         github_url: card.github_url || '',
-        slug: card.slug,
-        theme: card.theme,
-        primary_color: card.primary_color,
-        secondary_color: card.secondary_color,
-        accent_color: card.accent_color,
+        slug: card.slug || '',
+        theme: card.theme || 'corporate',
+        primary_color: card.primary_color || '#4F46E5',
+        secondary_color: card.secondary_color || '#7C3AED',
+        accent_color: card.accent_color || '#06B6D4',
         background_color: card.background_color || '',
-        font_family: card.font_family,
-        status: card.status,
-        is_active: card.is_active,
+        font_family: card.font_family || 'sans',
+        status: card.status || 'draft',
+        is_active: card.is_active ?? true,
     });
 
     const [profilePreview, setProfilePreview] = useState<string | null>(card.profile_photo_url || null);
@@ -176,6 +176,7 @@ export default function EditCard({ card, breadcrumbs = [] }: EditCardProps) {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
+        clearErrors();
         put(`/admin/cards/${card.slug}`, {
             forceFormData: true,
         });
