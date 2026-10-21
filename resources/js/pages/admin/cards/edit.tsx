@@ -170,7 +170,7 @@ export default function EditCard({ card, breadcrumbs = [] }: EditCardProps) {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        put(`/admin/cards/${card.id}`, {
+        put(`/admin/cards/${card.slug}`, {
             forceFormData: true,
         });
     };
