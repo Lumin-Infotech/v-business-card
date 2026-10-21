@@ -52,9 +52,9 @@ export default function CardsList({ cards, filters }: Props) {
         router.get('/admin/cards', { search, status, theme }, { preserveScroll: true });
     };
 
-    const handleDelete = (cardId: number) => {
+    const handleDelete = (cardSlug: string) => {
         if (confirm('Are you sure you want to delete this card?')) {
-            router.delete(`/admin/cards/${cardId}`);
+            router.delete(`/admin/cards/${cardSlug}`);
         }
     };
 
@@ -193,7 +193,7 @@ export default function CardsList({ cards, filters }: Props) {
                                                 <Edit2 className="w-4 h-4" />
                                             </Link>
                                             <button
-                                                onClick={() => handleDelete(card.id)}
+                                                onClick={() => handleDelete(card.slug)}
                                                 className="p-2 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900 rounded"
                                             >
                                                 <Trash2 className="w-4 h-4" />
