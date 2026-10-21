@@ -60,9 +60,10 @@ class StoreBusinessCardRequest extends FormRequest
             'youtube_url' => 'nullable|url|max:255',
             'github_url' => 'nullable|url|max:255',
 
-            // Design fields - these are system-controlled and not user-editable
-            // User-provided values are ignored by the controller
-            // 'theme' => 'required|string|in:corporate,gradient,minimal,dark,bold',
+            // Design - Theme is user-selectable from predefined options
+            // Colors and fonts are locked to each theme (cannot be customized)
+            'theme' => 'required|string|in:corporate,gradient,minimal,dark,bold',
+            // Color and font fields are NOT validated - they come from theme config
             // 'primary_color' => 'required|string|size:7',
             // 'secondary_color' => 'required|string|size:7',
             // 'accent_color' => 'required|string|size:7',

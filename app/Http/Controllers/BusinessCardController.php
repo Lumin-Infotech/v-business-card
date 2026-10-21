@@ -77,13 +77,15 @@ class BusinessCardController extends Controller
             return back()->withInput()->withErrors(['slug' => 'This slug is reserved for system use.']);
         }
 
-        // AUTO-ASSIGN DEFAULT THEME (system-controlled)
-        // All design settings come from the centralized theme config
-        $defaultTheme = config('themes.default');
-        $themeConfig = config('themes.themes.' . $defaultTheme);
+        // THEME SELECTION - User selects theme, colors/fonts come from config
+        // Theme is validated but colors are NOT user-customizable
+        $selectedTheme = $data['theme'] ?? config('themes.default');
+        $themeConfig = config('themes.themes.' . $selectedTheme);
 
         if ($themeConfig) {
-            $data['theme'] = $defaultTheme;
+            // Keep the selected theme
+            $data['theme'] = $selectedTheme;
+            // Lock colors and fonts to the selected theme's configuration
             $data['primary_color'] = $themeConfig['primary_color'];
             $data['secondary_color'] = $themeConfig['secondary_color'];
             $data['accent_color'] = $themeConfig['accent_color'];

@@ -635,69 +635,144 @@ export default function CreateCard({ breadcrumbs = [] }: CreateCardProps) {
                             </div>
                         </div>
 
-                        {/* Design & Theme Section - System Controlled */}
+                        {/* Design & Theme Section - Predefined Themes */}
                         <div className="space-y-6">
                             <div className="pb-4 border-b border-gray-200 dark:border-gray-700">
                                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Design & Theme</h2>
                                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                                    Design settings are automatically assigned. All new cards use the default system theme.
+                                    Select a professional theme. Colors and fonts are predefined for each theme.
                                 </p>
                             </div>
 
-                            {/* Read-only Theme Summary */}
-                            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
-                                <div className="flex items-start justify-between">
+                            {/* Theme Selector */}
+                            <div>
+                                <Label htmlFor="theme">Theme *</Label>
+                                <Select value={data.theme} onValueChange={(value) => setData('theme', value)}>
+                                    <SelectTrigger className="mt-2">
+                                        <SelectValue placeholder="Select a theme" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="corporate">Corporate Classic</SelectItem>
+                                        <SelectItem value="gradient">Modern Gradient</SelectItem>
+                                        <SelectItem value="minimal">Minimal Light</SelectItem>
+                                        <SelectItem value="dark">Dark Executive</SelectItem>
+                                        <SelectItem value="bold">Creative Bold</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                <InputError message={errors.theme} />
+                            </div>
+
+                            {/* Theme Preview */}
+                            <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+                                <div className="space-y-4">
                                     <div>
-                                        <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                                            Corporate Classic (Default)
+                                        <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
+                                            {data.theme.charAt(0).toUpperCase() + data.theme.slice(1)} Theme
                                         </h3>
-                                        <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
-                                            Professional and clean design for corporate professionals
+                                        <p className="text-sm text-gray-600 dark:text-gray-300">
+                                            {data.theme === 'corporate' && 'Professional and clean design for corporate professionals'}
+                                            {data.theme === 'gradient' && 'Contemporary design with vibrant gradients'}
+                                            {data.theme === 'minimal' && 'Elegant and minimalist with plenty of whitespace'}
+                                            {data.theme === 'dark' && 'Premium dark theme for senior professionals'}
+                                            {data.theme === 'bold' && 'Expressive and bold for creative professionals'}
                                         </p>
-                                        <div className="space-y-2 text-sm">
-                                            <div className="flex items-center gap-3">
-                                                <span className="text-gray-600 dark:text-gray-400">Primary:</span>
-                                                <div
-                                                    className="w-6 h-6 rounded border border-gray-300"
-                                                    style={{ backgroundColor: '#1F2937' }}
-                                                    title="#1F2937"
-                                                />
-                                                <span className="font-mono text-gray-700 dark:text-gray-300">#1F2937</span>
-                                            </div>
-                                            <div className="flex items-center gap-3">
-                                                <span className="text-gray-600 dark:text-gray-400">Secondary:</span>
-                                                <div
-                                                    className="w-6 h-6 rounded border border-gray-300"
-                                                    style={{ backgroundColor: '#3B82F6' }}
-                                                    title="#3B82F6"
-                                                />
-                                                <span className="font-mono text-gray-700 dark:text-gray-300">#3B82F6</span>
-                                            </div>
-                                            <div className="flex items-center gap-3">
-                                                <span className="text-gray-600 dark:text-gray-400">Accent:</span>
-                                                <div
-                                                    className="w-6 h-6 rounded border border-gray-300"
-                                                    style={{ backgroundColor: '#10B981' }}
-                                                    title="#10B981"
-                                                />
-                                                <span className="font-mono text-gray-700 dark:text-gray-300">#10B981</span>
-                                            </div>
-                                            <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400 mt-2">
-                                                <span>Font Family:</span>
-                                                <span className="font-semibold">Sans Serif</span>
-                                            </div>
-                                        </div>
                                     </div>
-                                    <div className="text-right">
-                                        <span className="inline-block px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 rounded text-xs font-semibold">
-                                            System Default
-                                        </span>
+
+                                    {/* Color Swatches */}
+                                    <div className="grid grid-cols-3 gap-4">
+                                        <div className="text-center">
+                                            <div
+                                                className="w-full h-20 rounded-lg border-2 border-gray-300 dark:border-gray-600 mb-2"
+                                                style={{
+                                                    backgroundColor:
+                                                        data.theme === 'corporate'
+                                                            ? '#1F2937'
+                                                            : data.theme === 'gradient'
+                                                              ? '#3B82F6'
+                                                              : data.theme === 'minimal'
+                                                                ? '#1F2937'
+                                                                : data.theme === 'dark'
+                                                                  ? '#0F172A'
+                                                                  : '#DC2626',
+                                                }}
+                                            />
+                                            <p className="text-xs font-semibold text-gray-700 dark:text-gray-300">Primary</p>
+                                            <p className="text-xs text-gray-500 dark:text-gray-400 font-mono">
+                                                {data.theme === 'corporate'
+                                                    ? '#1F2937'
+                                                    : data.theme === 'gradient'
+                                                      ? '#3B82F6'
+                                                      : data.theme === 'minimal'
+                                                        ? '#1F2937'
+                                                        : data.theme === 'dark'
+                                                          ? '#0F172A'
+                                                          : '#DC2626'}
+                                            </p>
+                                        </div>
+                                        <div className="text-center">
+                                            <div
+                                                className="w-full h-20 rounded-lg border-2 border-gray-300 dark:border-gray-600 mb-2"
+                                                style={{
+                                                    backgroundColor:
+                                                        data.theme === 'corporate'
+                                                            ? '#3B82F6'
+                                                            : data.theme === 'gradient'
+                                                              ? '#8B5CF6'
+                                                              : data.theme === 'minimal'
+                                                                ? '#6B7280'
+                                                                : data.theme === 'dark'
+                                                                  ? '#1E293B'
+                                                                  : '#F59E0B',
+                                                }}
+                                            />
+                                            <p className="text-xs font-semibold text-gray-700 dark:text-gray-300">Secondary</p>
+                                            <p className="text-xs text-gray-500 dark:text-gray-400 font-mono">
+                                                {data.theme === 'corporate'
+                                                    ? '#3B82F6'
+                                                    : data.theme === 'gradient'
+                                                      ? '#8B5CF6'
+                                                      : data.theme === 'minimal'
+                                                        ? '#6B7280'
+                                                        : data.theme === 'dark'
+                                                          ? '#1E293B'
+                                                          : '#F59E0B'}
+                                            </p>
+                                        </div>
+                                        <div className="text-center">
+                                            <div
+                                                className="w-full h-20 rounded-lg border-2 border-gray-300 dark:border-gray-600 mb-2"
+                                                style={{
+                                                    backgroundColor:
+                                                        data.theme === 'corporate'
+                                                            ? '#10B981'
+                                                            : data.theme === 'gradient'
+                                                              ? '#EC4899'
+                                                              : data.theme === 'minimal'
+                                                                ? '#9333EA'
+                                                                : data.theme === 'dark'
+                                                                  ? '#F59E0B'
+                                                                  : '#059669',
+                                                }}
+                                            />
+                                            <p className="text-xs font-semibold text-gray-700 dark:text-gray-300">Accent</p>
+                                            <p className="text-xs text-gray-500 dark:text-gray-400 font-mono">
+                                                {data.theme === 'corporate'
+                                                    ? '#10B981'
+                                                    : data.theme === 'gradient'
+                                                      ? '#EC4899'
+                                                      : data.theme === 'minimal'
+                                                        ? '#9333EA'
+                                                        : data.theme === 'dark'
+                                                          ? '#F59E0B'
+                                                          : '#059669'}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
                             <p className="text-xs text-gray-500 dark:text-gray-400 italic">
-                                Theme and design settings cannot be customized. Contact your administrator if you need a different theme applied to your card.
+                                Colors and fonts are locked to each theme. You cannot customize individual colors.
                             </p>
                         </div>
 

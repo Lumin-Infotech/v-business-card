@@ -647,69 +647,63 @@ export default function EditCard({ card, breadcrumbs = [] }: EditCardProps) {
                             </div>
                         </div>
 
-                        {/* Design & Theme Section - System Controlled */}
+                        {/* Design & Theme Section - Predefined Themes */}
                         <div className="space-y-6">
                             <div className="pb-4 border-b border-gray-200 dark:border-gray-700">
                                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Design & Theme</h2>
                                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                                    Design settings are locked and cannot be changed. Theme was assigned when this card was created.
+                                    Theme selection is locked. Colors and fonts cannot be customized.
                                 </p>
                             </div>
 
-                            {/* Read-only Theme Summary */}
-                            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-6">
-                                <div className="flex items-start justify-between">
+                            {/* Read-only Theme Display */}
+                            <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+                                <div className="space-y-4">
                                     <div>
-                                        <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                                        <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
                                             {card.theme.charAt(0).toUpperCase() + card.theme.slice(1)} Theme
                                         </h3>
-                                        <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
-                                            This card's appearance is controlled by the system theme assigned at creation.
+                                        <p className="text-sm text-gray-600 dark:text-gray-300">
+                                            {card.theme === 'corporate' && 'Professional and clean design for corporate professionals'}
+                                            {card.theme === 'gradient' && 'Contemporary design with vibrant gradients'}
+                                            {card.theme === 'minimal' && 'Elegant and minimalist with plenty of whitespace'}
+                                            {card.theme === 'dark' && 'Premium dark theme for senior professionals'}
+                                            {card.theme === 'bold' && 'Expressive and bold for creative professionals'}
                                         </p>
-                                        <div className="space-y-2 text-sm">
-                                            <div className="flex items-center gap-3">
-                                                <span className="text-gray-600 dark:text-gray-400">Primary:</span>
-                                                <div
-                                                    className="w-6 h-6 rounded border border-gray-300"
-                                                    style={{ backgroundColor: card.primary_color }}
-                                                    title={card.primary_color}
-                                                />
-                                                <span className="font-mono text-gray-700 dark:text-gray-300">{card.primary_color}</span>
-                                            </div>
-                                            <div className="flex items-center gap-3">
-                                                <span className="text-gray-600 dark:text-gray-400">Secondary:</span>
-                                                <div
-                                                    className="w-6 h-6 rounded border border-gray-300"
-                                                    style={{ backgroundColor: card.secondary_color }}
-                                                    title={card.secondary_color}
-                                                />
-                                                <span className="font-mono text-gray-700 dark:text-gray-300">{card.secondary_color}</span>
-                                            </div>
-                                            <div className="flex items-center gap-3">
-                                                <span className="text-gray-600 dark:text-gray-400">Accent:</span>
-                                                <div
-                                                    className="w-6 h-6 rounded border border-gray-300"
-                                                    style={{ backgroundColor: card.accent_color }}
-                                                    title={card.accent_color}
-                                                />
-                                                <span className="font-mono text-gray-700 dark:text-gray-300">{card.accent_color}</span>
-                                            </div>
-                                            <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400 mt-2">
-                                                <span>Font Family:</span>
-                                                <span className="font-semibold">{card.font_family === 'sans' ? 'Sans Serif' : card.font_family.charAt(0).toUpperCase() + card.font_family.slice(1)}</span>
-                                            </div>
-                                        </div>
                                     </div>
-                                    <div className="text-right">
-                                        <span className="inline-block px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 rounded text-xs font-semibold">
-                                            Locked
-                                        </span>
+
+                                    {/* Color Swatches */}
+                                    <div className="grid grid-cols-3 gap-4">
+                                        <div className="text-center">
+                                            <div
+                                                className="w-full h-20 rounded-lg border-2 border-gray-300 dark:border-gray-600 mb-2"
+                                                style={{ backgroundColor: card.primary_color }}
+                                            />
+                                            <p className="text-xs font-semibold text-gray-700 dark:text-gray-300">Primary</p>
+                                            <p className="text-xs text-gray-500 dark:text-gray-400 font-mono">{card.primary_color}</p>
+                                        </div>
+                                        <div className="text-center">
+                                            <div
+                                                className="w-full h-20 rounded-lg border-2 border-gray-300 dark:border-gray-600 mb-2"
+                                                style={{ backgroundColor: card.secondary_color }}
+                                            />
+                                            <p className="text-xs font-semibold text-gray-700 dark:text-gray-300">Secondary</p>
+                                            <p className="text-xs text-gray-500 dark:text-gray-400 font-mono">{card.secondary_color}</p>
+                                        </div>
+                                        <div className="text-center">
+                                            <div
+                                                className="w-full h-20 rounded-lg border-2 border-gray-300 dark:border-gray-600 mb-2"
+                                                style={{ backgroundColor: card.accent_color }}
+                                            />
+                                            <p className="text-xs font-semibold text-gray-700 dark:text-gray-300">Accent</p>
+                                            <p className="text-xs text-gray-500 dark:text-gray-400 font-mono">{card.accent_color}</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
                             <p className="text-xs text-gray-500 dark:text-gray-400 italic">
-                                Theme and design settings cannot be changed after card creation. Contact your administrator if you need a different theme.
+                                Theme and colors are locked and cannot be changed after card creation.
                             </p>
                         </div>
 
