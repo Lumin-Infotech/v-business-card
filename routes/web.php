@@ -54,4 +54,5 @@ require __DIR__.'/auth.php';
 // Public card routes - must be LAST to avoid catching other routes
 Route::get('/{slug}', [PublicCardController::class, 'show'])->where('slug', '[a-z0-9\-]+')->name('public.card');
 Route::get('/{slug}/qr', [PublicCardController::class, 'qr'])->where('slug', '[a-z0-9\-]+')->name('public.card.qr');
+Route::get('/{slug}/qr/download', [PublicCardController::class, 'downloadQr'])->where('slug', '[a-z0-9\-]+')->name('public.card.qr.download');
 Route::get('/{slug}/contact', [PublicCardController::class, 'downloadContact'])->where('slug', '[a-z0-9\-]+')->name('public.card.contact');

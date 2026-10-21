@@ -40,7 +40,7 @@ class PublicCardController extends Controller
     }
 
     /**
-     * Download QR code for the card
+     * Display QR code for the card (inline, not as download)
      */
     public function qr(string $slug): HttpResponse
     {
@@ -55,6 +55,29 @@ class PublicCardController extends Controller
 
         $qrPng = QRCodeService::generatePng(url("/{$slug}"));
 
+        // Return as inline image (display in browser) instead of attachment (download)
+        return response($qrPng)
+            ->header('Content-Type', 'image/png')
+            ->header('Cache-Control', 'public, max-age=3600');
+    }
+
+    /**
+     * Download QR code for the card
+     */
+    public function downloadQr(string $slug): HttpResponse
+    {
+        $card = BusinessCard::where('slug', $slug)->first();
+
+        if (!$card || $card->status !== 'published' || !$card->is_active) {
+            abort(404, 'Business card not found.');
+        }
+
+        // Track the QR download
+        AnalyticsService::trackQrScan($card->id);
+
+        $qrPng = QRCodeService::generatePng(url("/{$slug}"));
+
+        // Return as attachment (forces download)
         return response($qrPng)
             ->header('Content-Type', 'image/png')
             ->header('Content-Disposition', "attachment; filename=\"{$slug}-qr.png\"");

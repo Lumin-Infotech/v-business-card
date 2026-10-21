@@ -65,12 +65,6 @@ export default function CardDisplay({ card }: { card: Card }) {
         <>
             <Head title={card.full_name} />
             <div className="min-h-screen" style={{ backgroundColor: '#f9fafb' }}>
-                {/* Themed Background Accent */}
-                <div
-                    className="h-32 md:h-48 w-full"
-                    style={{ background: `linear-gradient(135deg, ${themeColors.primary}80 0%, ${themeColors.secondary}80 100%)` }}
-                />
-
                 <div className="max-w-4xl mx-auto px-4 py-8 md:py-12">
                     {/* Profile Card */}
                     <div className="bg-white rounded-xl shadow-lg overflow-hidden">
@@ -78,9 +72,18 @@ export default function CardDisplay({ card }: { card: Card }) {
                         {card.cover_image ? (
                             <div className="w-full h-48 md:h-64 bg-gray-200 overflow-hidden">
                                 <img
-                                    src={card.cover_image}
+                                    src={`/uploads/${card.cover_image}`}
                                     alt="Cover"
                                     className="w-full h-full object-cover"
+                                    onError={(e) => {
+                                        // Fallback to gradient if image fails to load
+                                        const element = e.currentTarget;
+                                        const parent = element.parentElement;
+                                        if (parent) {
+                                            parent.style.background = `linear-gradient(135deg, ${themeColors.primary} 0%, ${themeColors.secondary} 100%)`;
+                                            element.style.display = 'none';
+                                        }
+                                    }}
                                 />
                             </div>
                         ) : (
@@ -95,14 +98,27 @@ export default function CardDisplay({ card }: { card: Card }) {
                             {/* Header with Profile Photo and Name */}
                             <div className="flex flex-col md:flex-row gap-6 md:gap-8 mb-8">
                                 {/* Profile Photo */}
-                                {card.profile_photo && (
+                                {card.profile_photo ? (
                                     <div className="flex-shrink-0">
                                         <img
-                                            src={card.profile_photo}
+                                            src={`/uploads/${card.profile_photo}`}
                                             alt={card.full_name}
                                             className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-white shadow-lg object-cover"
                                             style={{ borderColor: themeColors.primary }}
+                                            onError={(e) => {
+                                                // If profile photo fails, hide it - will show default spacing
+                                                e.currentTarget.style.display = 'none';
+                                            }}
                                         />
+                                    </div>
+                                ) : (
+                                    <div
+                                        className="flex-shrink-0 w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-white shadow-lg flex items-center justify-center"
+                                        style={{ borderColor: themeColors.primary, backgroundColor: `${themeColors.primary}20` }}
+                                    >
+                                        <div className="text-center text-gray-400">
+                                            <div className="text-2xl md:text-3xl">👤</div>
+                                        </div>
                                     </div>
                                 )}
 
@@ -326,8 +342,13 @@ export default function CardDisplay({ card }: { card: Card }) {
                         <div className="mb-6 bg-gray-50 p-6 rounded-lg flex justify-center">
                             <img
                                 src={`/${card.slug}/qr`}
-                                alt="QR Code"
-                                className="w-64 h-64 border-4 border-gray-200 rounded-lg"
+                                alt="QR Code for business card"
+                                className="w-64 h-64 border-4 border-gray-200 rounded-lg bg-white"
+                                loading="eager"
+                                onError={(e) => {
+                                    console.error('QR code failed to load:', e);
+                                    e.currentTarget.alt = 'QR code unavailable';
+                                }}
                             />
                         </div>
 
@@ -335,13 +356,23 @@ export default function CardDisplay({ card }: { card: Card }) {
                             Scan with your phone camera to visit this business card
                         </p>
 
-                        <button
-                            onClick={() => setShowQRModal(false)}
-                            className="w-full py-3 rounded-lg font-medium transition-colors text-white"
-                            style={{ backgroundColor: themeColors.primary }}
-                        >
-                            Close
-                        </button>
+                        <div className="flex gap-3">
+                            <a
+                                href={`/${card.slug}/qr/download`}
+                                download
+                                className="flex-1 py-3 rounded-lg font-medium transition-colors text-white text-center"
+                                style={{ backgroundColor: themeColors.secondary }}
+                            >
+                                Download QR
+                            </a>
+                            <button
+                                onClick={() => setShowQRModal(false)}
+                                className="flex-1 py-3 rounded-lg font-medium transition-colors text-white"
+                                style={{ backgroundColor: themeColors.primary }}
+                            >
+                                Close
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}

@@ -40,11 +40,21 @@ test('qr code can be generated from service', function () {
     expect(strlen($qrPng))->toBeGreaterThan(0);
 });
 
-test('qr code endpoint returns png image', function () {
+test('qr code endpoint returns png image for display', function () {
     $response = $this->get('/john-doe-qr/qr');
 
     $response->assertOk();
     $response->assertHeader('Content-Type', 'image/png');
+    // QR endpoint displays inline (no attachment header)
+    expect($response->headers->get('Content-Disposition'))->toBeNull();
+});
+
+test('qr code download endpoint returns png as attachment', function () {
+    $response = $this->get('/john-doe-qr/qr/download');
+
+    $response->assertOk();
+    $response->assertHeader('Content-Type', 'image/png');
+    // Download endpoint forces download
     $response->assertHeader('Content-Disposition', 'attachment; filename="john-doe-qr-qr.png"');
 });
 
