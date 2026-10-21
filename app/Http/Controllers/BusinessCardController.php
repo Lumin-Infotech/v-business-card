@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreBusinessCardRequest;
 use App\Http\Requests\UpdateBusinessCardRequest;
 use App\Models\BusinessCard;
+use App\Services\ImageUploadService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -76,6 +77,21 @@ class BusinessCardController extends Controller
             return back()->withInput()->withErrors(['slug' => 'This slug is reserved for system use.']);
         }
 
+        // Handle image uploads
+        if ($request->hasFile('profile_photo')) {
+            $data['profile_photo'] = ImageUploadService::uploadProfilePhoto(
+                $request->file('profile_photo'),
+                $data['slug']
+            );
+        }
+
+        if ($request->hasFile('cover_image')) {
+            $data['cover_image'] = ImageUploadService::uploadCoverImage(
+                $request->file('cover_image'),
+                $data['slug']
+            );
+        }
+
         $card = BusinessCard::create($data);
 
         return redirect()->route('admin.cards.show', $card)
@@ -115,6 +131,30 @@ class BusinessCardController extends Controller
             return back()->withInput()->withErrors(['slug' => 'This slug is reserved for system use.']);
         }
 
+        // Handle profile photo upload
+        if ($request->hasFile('profile_photo')) {
+            // Delete old profile photo if it exists
+            if ($card->profile_photo) {
+                ImageUploadService::deleteImage($card->profile_photo);
+            }
+            $data['profile_photo'] = ImageUploadService::uploadProfilePhoto(
+                $request->file('profile_photo'),
+                $data['slug']
+            );
+        }
+
+        // Handle cover image upload
+        if ($request->hasFile('cover_image')) {
+            // Delete old cover image if it exists
+            if ($card->cover_image) {
+                ImageUploadService::deleteImage($card->cover_image);
+            }
+            $data['cover_image'] = ImageUploadService::uploadCoverImage(
+                $request->file('cover_image'),
+                $data['slug']
+            );
+        }
+
         $card->update($data);
 
         return redirect()->route('admin.cards.show', $card)
@@ -127,6 +167,15 @@ class BusinessCardController extends Controller
     public function destroy(BusinessCard $card): RedirectResponse
     {
         $cardName = $card->full_name;
+
+        // Delete associated images
+        if ($card->profile_photo) {
+            ImageUploadService::deleteImage($card->profile_photo);
+        }
+        if ($card->cover_image) {
+            ImageUploadService::deleteImage($card->cover_image);
+        }
+
         $card->delete();
 
         return redirect()->route('admin.cards.index')

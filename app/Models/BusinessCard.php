@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\ImageUploadService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class BusinessCard extends Model
 {
     use HasFactory;
+
+    protected $appends = ['profile_photo_url', 'cover_image_url'];
 
     protected $fillable = [
         'name',
@@ -68,6 +71,22 @@ class BusinessCard extends Model
     public function updatedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    /**
+     * Get the profile photo URL.
+     */
+    public function getProfilePhotoUrlAttribute(): ?string
+    {
+        return ImageUploadService::getImageUrl($this->profile_photo);
+    }
+
+    /**
+     * Get the cover image URL.
+     */
+    public function getCoverImageUrlAttribute(): ?string
+    {
+        return ImageUploadService::getImageUrl($this->cover_image);
     }
 
     /**
