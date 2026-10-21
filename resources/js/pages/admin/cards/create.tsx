@@ -113,6 +113,23 @@ export default function CreateCard({ breadcrumbs = [] }: CreateCardProps) {
     const themes = ['corporate', 'gradient', 'minimal', 'dark', 'bold'];
     const fontFamilies = ['sans', 'serif', 'mono'];
 
+    // Auto-generate slug from full_name
+    const generateSlug = (name: string): string => {
+        return name
+            .toLowerCase()
+            .trim()
+            .replace(/[^\w\s-]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-');
+    };
+
+    // Update slug whenever full_name changes
+    const handleFullNameChange = (value: string) => {
+        setData('full_name', value);
+        const newSlug = generateSlug(value);
+        setData('slug', newSlug);
+    };
+
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'profile' | 'cover') => {
         const file = e.target.files?.[0];
         if (file) {
@@ -196,16 +213,19 @@ export default function CreateCard({ breadcrumbs = [] }: CreateCardProps) {
                                 </div>
 
                                 <div>
-                                    <Label htmlFor="full_name">Full Name *</Label>
+                                    <Label htmlFor="full_name">Full Name * (auto-generates slug)</Label>
                                     <Input
                                         id="full_name"
                                         type="text"
                                         required
                                         value={data.full_name}
-                                        onChange={(e) => setData('full_name', e.target.value)}
+                                        onChange={(e) => handleFullNameChange(e.target.value)}
                                         placeholder="e.g., John Doe"
                                         className="mt-2"
                                     />
+                                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                        URL slug will be automatically generated from this name
+                                    </p>
                                     <InputError message={errors.full_name} />
                                 </div>
 
@@ -750,21 +770,20 @@ export default function CreateCard({ breadcrumbs = [] }: CreateCardProps) {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <Label htmlFor="slug">URL Slug *</Label>
+                                    <Label htmlFor="slug">URL Slug (Auto-generated)</Label>
                                     <div className="mt-2 flex items-center gap-2">
                                         <span className="text-sm text-gray-600 dark:text-gray-400">/</span>
                                         <Input
                                             id="slug"
                                             type="text"
-                                            required
                                             value={data.slug}
-                                            onChange={(e) => setData('slug', e.target.value)}
-                                            placeholder="e.g., john-doe"
-                                            className="flex-1"
+                                            disabled
+                                            placeholder="Generated from Full Name"
+                                            className="flex-1 bg-gray-100 dark:bg-gray-700 cursor-not-allowed"
                                         />
                                     </div>
                                     <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                        Must contain only lowercase letters, numbers, and hyphens
+                                        Automatically generated from your full name. Update the full name to change the slug.
                                     </p>
                                     <InputError message={errors.slug} />
                                 </div>

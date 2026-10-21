@@ -782,21 +782,19 @@ export default function EditCard({ card, breadcrumbs = [] }: EditCardProps) {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <Label htmlFor="slug">URL Slug *</Label>
+                                    <Label htmlFor="slug">URL Slug (Cannot be changed)</Label>
                                     <div className="mt-2 flex items-center gap-2">
                                         <span className="text-sm text-gray-600 dark:text-gray-400">/</span>
                                         <Input
                                             id="slug"
                                             type="text"
-                                            required
                                             value={data.slug}
-                                            onChange={(e) => setData('slug', e.target.value)}
-                                            placeholder="e.g., john-doe"
-                                            className="flex-1"
+                                            disabled
+                                            className="flex-1 bg-gray-100 dark:bg-gray-700 cursor-not-allowed"
                                         />
                                     </div>
                                     <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                        Must contain only lowercase letters, numbers, and hyphens
+                                        URL slug is set when the card is created and cannot be changed
                                     </p>
                                     <InputError message={errors.slug} />
                                 </div>
