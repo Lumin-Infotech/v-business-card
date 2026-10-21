@@ -2,7 +2,7 @@
 
 **A modern, production-ready SaaS application for creating, managing, and sharing professional virtual business cards.**
 
-[![Tests](https://img.shields.io/badge/tests-74%2F74-brightgreen)](./tests)
+[![Tests](https://img.shields.io/badge/tests-75%2F75-brightgreen)](./tests)
 [![Build](https://img.shields.io/badge/build-passing-brightgreen)]()
 [![Laravel](https://img.shields.io/badge/laravel-12-red)]()
 [![React](https://img.shields.io/badge/react-19-blue)]()
@@ -82,7 +82,7 @@ Default: admin@example.com / password
 - Styling: Tailwind CSS v4
 - Components: Radix UI
 - Database: MySQL + Eloquent ORM
-- Testing: Pest (74 tests)
+- Testing: Pest (75 tests)
 
 ## Project Structure
 
@@ -90,14 +90,14 @@ Default: admin@example.com / password
 app/ - Controllers, Models, Services
 resources/ - React pages and components
 database/ - Migrations, Seeds, Factories
-tests/ - Feature tests (74 tests passing)
+tests/ - Feature tests (75 tests passing)
 ```
 
 ## Testing
 
 ```bash
 php artisan test --compact
-# Result: 74/74 PASS ✅
+# Result: 75/75 PASS ✅
 ```
 
 ## Development
@@ -136,12 +136,9 @@ All features implemented and tested:
 - Analytics tracking ✅
 - Public card display ✅
 - Admin dashboard ✅
-
-## Documentation
-
-- **DEPLOYMENT_GUIDE.md** - Production deployment
-- **API_DOCUMENTATION.md** - REST API reference
-- **ProjectPlan.md** - Original requirements
+- Image uploads and management ✅
+- QR code generation and display ✅
+- vCard export ✅
 
 ## License
 
