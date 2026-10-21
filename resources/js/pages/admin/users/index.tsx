@@ -2,6 +2,8 @@ import { Link, router } from '@inertiajs/react';
 import { Head } from '@inertiajs/react';
 import { Search, Plus, Edit2, Trash2, CheckCircle, XCircle } from 'lucide-react';
 import { useState } from 'react';
+import AppLayout from '@/layouts/app-layout';
+import { BreadcrumbItem } from '@/types';
 
 interface User {
     id: number;
@@ -41,10 +43,16 @@ export default function UsersList({ users, filters }: Props) {
         }
     };
 
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Admin', url: '/admin' },
+        { title: 'Users', url: '/admin/users' },
+    ];
+
     return (
         <>
             <Head title="Users" />
-            <div className="space-y-6">
+            <AppLayout breadcrumbs={breadcrumbs}>
+            <div className="space-y-8 p-6">
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <div>
@@ -181,6 +189,7 @@ export default function UsersList({ users, filters }: Props) {
                     )}
                 </div>
             </div>
+            </AppLayout>
         </>
     );
 }

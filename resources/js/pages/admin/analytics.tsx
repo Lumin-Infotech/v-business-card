@@ -1,5 +1,7 @@
 import { Head } from '@inertiajs/react';
 import { BarChart3, Eye, QrCode, Download, TrendingUp } from 'lucide-react';
+import AppLayout from '@/layouts/app-layout';
+import { BreadcrumbItem } from '@/types';
 
 interface Analytics {
     summary: {
@@ -24,10 +26,16 @@ interface Props {
 }
 
 export default function Analytics({ analytics }: Props) {
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Admin', url: '/admin' },
+        { title: 'Analytics', url: '/admin/analytics' },
+    ];
+
     return (
         <>
             <Head title="Analytics" />
-            <div className="space-y-6">
+            <AppLayout breadcrumbs={breadcrumbs}>
+            <div className="space-y-8 p-6">
                 {/* Header */}
                 <div>
                     <h1 className="text-3xl font-bold">Analytics Dashboard</h1>
@@ -136,6 +144,7 @@ export default function Analytics({ analytics }: Props) {
                     <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">Hover over bars to see values</p>
                 </div>
             </div>
+            </AppLayout>
         </>
     );
 }

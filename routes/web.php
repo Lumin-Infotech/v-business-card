@@ -19,7 +19,7 @@ Route::middleware(['auth', 'active.user'])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');
 
     // Admin routes
-    Route::prefix('admin')->name('admin.')->group(function () {
+    Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
         // Analytics
         Route::get('analytics', [AnalyticsController::class, 'index'])->name('analytics');
 

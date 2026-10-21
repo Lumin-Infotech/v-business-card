@@ -2,6 +2,8 @@ import { Link, router } from '@inertiajs/react';
 import { Head } from '@inertiajs/react';
 import { Search, Plus, Eye, Edit2, Trash2, CheckCircle, Circle } from 'lucide-react';
 import { useState } from 'react';
+import AppLayout from '@/layouts/app-layout';
+import { BreadcrumbItem } from '@/types';
 
 interface BusinessCard {
     id: number;
@@ -58,10 +60,16 @@ export default function CardsList({ cards, filters }: Props) {
 
     const themes = ['corporate', 'gradient', 'minimal', 'dark', 'bold'];
 
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Admin', url: '/admin' },
+        { title: 'Business Cards', url: '/admin/cards' },
+    ];
+
     return (
         <>
             <Head title="Business Cards" />
-            <div className="space-y-6">
+            <AppLayout breadcrumbs={breadcrumbs}>
+            <div className="space-y-8 p-6">
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <div>
@@ -204,6 +212,7 @@ export default function CardsList({ cards, filters }: Props) {
                     )}
                 </div>
             </div>
+            </AppLayout>
         </>
     );
 }

@@ -6,7 +6,8 @@ export interface Auth {
 
 export interface BreadcrumbItem {
     title: string;
-    href: string;
+    href?: string;
+    url?: string;
 }
 
 export interface NavGroup {
