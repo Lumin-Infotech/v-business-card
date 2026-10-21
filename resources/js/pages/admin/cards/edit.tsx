@@ -177,8 +177,10 @@ export default function EditCard({ card, breadcrumbs = [] }: EditCardProps) {
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         clearErrors();
+        // Only use forceFormData if we're actually uploading files
+        const hasFiles = data.profile_photo !== null || data.cover_image !== null;
         put(`/admin/cards/${card.slug}`, {
-            forceFormData: true,
+            ...(hasFiles && { forceFormData: true }),
         });
     };
 

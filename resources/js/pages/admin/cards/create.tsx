@@ -144,8 +144,10 @@ export default function CreateCard({ breadcrumbs = [] }: CreateCardProps) {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
+        // Only use forceFormData if we're actually uploading files
+        const hasFiles = data.profile_photo !== null || data.cover_image !== null;
         post('/admin/cards', {
-            forceFormData: true,
+            ...(hasFiles && { forceFormData: true }),
         });
     };
 
